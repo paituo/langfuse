@@ -45,11 +45,12 @@ import { AuthProviderButton } from "@/src/features/auth/components/AuthProviderB
 import { cn } from "@/src/utils/tailwind";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
 import { getSafeRedirectPath } from "@/src/utils/redirect";
+import { useTranslations } from "next-intl";
 
 const credentialAuthForm = z.object({
   email: z.email(),
   password: z.string().min(8, {
-    message: "Password must be at least 8 characters long",
+    message: "auth.passwordMinLength",
   }),
 });
 
@@ -199,6 +200,7 @@ export function SSOButtons({
   onProviderSelect?: (provider: NextAuthProvider) => void;
 }) {
   const capture = usePostHogClientCapture();
+  const t = useTranslations("auth");
   const [providerSigningIn, setProviderSigningIn] =
     useState<NextAuthProvider | null>(null);
 
@@ -239,7 +241,7 @@ export function SSOButtons({
             <div className="border-border my-6 border-t"></div>
           ) : (
             <div className="text-muted-foreground my-6 text-center text-xs">
-              or {action} with
+              {t("orSignInWith")}
             </div>
           )
         ) : null}
@@ -538,6 +540,7 @@ export default function SignIn({
 }: PageProps) {
   const router = useRouter();
   useHuggingFaceRedirect(runningOnHuggingFaceSpaces);
+  const t = useTranslations("auth");
 
   // handle NextAuth error codes: https://next-auth.js.org/configuration/pages#sign-in-page
   const nextAuthError =
@@ -722,25 +725,24 @@ export default function SignIn({
   return (
     <>
       <Head>
-        <title>Sign in | Langfuse</title>
+        <title>{t("login")} | Langfuse</title>
       </Head>
       <div className="flex flex-1 flex-col py-6 sm:min-h-full sm:justify-center sm:px-6 sm:py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <LangfuseIcon className="mx-auto" />
           <h2 className="text-primary mt-4 text-center text-2xl leading-9 font-bold tracking-tight">
-            Sign in to your account
+            {t("signInTitle")}
           </h2>
         </div>
 
         {isLangfuseCloud && (
           <div className="bg-card mt-4 -mb-4 rounded-lg p-3 text-center text-sm sm:mx-auto sm:w-full sm:max-w-[480px] sm:rounded-lg sm:px-6">
-            If you are experiencing issues signing in, please force refresh this
-            page (CMD + SHIFT + R) or clear your browser cache.{" "}
+            {t("signInIssues")}{" "}
             <a
               href="mailto:support@langfuse.com"
               className="text-primary-accent hover:text-hover-primary-accent cursor-pointer text-xs font-medium whitespace-nowrap"
             >
-              (contact us)
+              ({t("contactSupport")})
             </a>
           </div>
         )}
@@ -770,7 +772,7 @@ export default function SignIn({
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{t("email")}</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="jsdoe@example.com"
@@ -792,14 +794,14 @@ export default function SignIn({
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Password{" "}
+                              {t("password")}{" "}
                               <Link
                                 href="/auth/reset-password"
                                 className="text-primary-accent hover:text-hover-primary-accent ml-1 text-xs"
                                 tabIndex={-1}
                                 title="What is this?"
                               >
-                                (forgot password?)
+                                ({t("forgotPassword")})
                               </Link>
                             </FormLabel>
                             <FormControl>
@@ -827,7 +829,7 @@ export default function SignIn({
                       }
                       data-testid="submit-email-password-sign-in-form"
                     >
-                      {showPasswordStep ? "Sign in" : "Continue"}
+                      {showPasswordStep ? t("login") : t("continue")}
                     </Button>
                   </form>
                 </Form>
@@ -840,7 +842,7 @@ export default function SignIn({
                       : "hidden",
                   )}
                 >
-                  Last used
+                  {t("lastUsed")}
                 </div>
               </div>
             )}
@@ -848,7 +850,7 @@ export default function SignIn({
               <div className="text-destructive text-center text-sm font-medium">
                 {credentialsFormError}
                 <br />
-                Contact support if this error is unexpected.{" "}
+                {t("contactSupport")} if this error is unexpected.{" "}
                 {isLangfuseCloud &&
                   "Make sure you are using the correct cloud data region."}
               </div>
@@ -864,12 +866,12 @@ export default function SignIn({
           env.NEXT_PUBLIC_SIGN_UP_DISABLED !== "true" &&
           authProviders.credentials ? (
             <p className="text-muted-foreground mt-10 text-center text-sm">
-              No account yet?{" "}
+              {t("noAccountYet")}{" "}
               <Link
                 href={`/auth/sign-up${router.asPath.includes("?") ? router.asPath.substring(router.asPath.indexOf("?")) : ""}`}
                 className="text-primary-accent hover:text-hover-primary-accent leading-6 font-semibold"
               >
-                Sign up
+                {t("signUp")}
               </Link>
             </p>
           ) : null}

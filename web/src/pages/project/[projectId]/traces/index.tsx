@@ -11,12 +11,14 @@ import {
 import { useV4Beta } from "@/src/features/events/hooks/useV4Beta";
 import ObservationsEventsTable from "@/src/features/events/components/EventsTable";
 import { useQueryProject } from "@/src/features/projects/hooks";
+import { useTranslations } from "next-intl";
 
 export default function Traces() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
   const { isBetaEnabled, isInitializing } = useV4Beta();
   const { project } = useQueryProject();
+  const t = useTranslations("tracing");
 
   // Check if the user has tracing configured
   // Skip polling entirely if the project flag is already set in the session
@@ -42,10 +44,25 @@ export default function Traces() {
     return (
       <Page
         headerProps={{
-          title: "Tracing",
+          title: t("title"),
           help: {
-            description:
-              "A trace represents a single function/api invocation. Traces contain observations. See [docs](https://langfuse.com/docs/observability/data-model) to learn more.",
+            description: (
+              <>
+                {t("description", {
+                  docsLink: (
+                    <a
+                      href="https://langfuse.com/docs/observability/data-model"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="decoration-primary/30 hover:decoration-primary underline"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {t("docsLinkText")}
+                    </a>
+                  ),
+                })}
+              </>
+            ),
             href: "https://langfuse.com/docs/observability/data-model",
           },
         }}
@@ -59,22 +76,23 @@ export default function Traces() {
   return (
     <Page
       headerProps={{
-        title: "Tracing",
+        title: t("title"),
         help: {
           description: (
             <>
-              A trace represents a single function/api invocation. Traces
-              contain observations. See{" "}
-              <a
-                href="https://langfuse.com/docs/observability/data-model"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="decoration-primary/30 hover:decoration-primary underline"
-                onClick={(e) => e.stopPropagation()}
-              >
-                docs
-              </a>{" "}
-              to learn more.
+              {t("description", {
+                docsLink: (
+                  <a
+                    href="https://langfuse.com/docs/observability/data-model"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="decoration-primary/30 hover:decoration-primary underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {t("docsLinkText")}
+                  </a>
+                ),
+              })}
             </>
           ),
           href: "https://langfuse.com/docs/observability/data-model",

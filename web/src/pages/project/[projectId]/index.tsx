@@ -40,6 +40,7 @@ import {
   getDashboardQuerySchedulerMaxConcurrent,
   useDashboardQueryScheduler,
 } from "@/src/hooks/useDashboardQueryScheduler";
+import { useTranslations } from "next-intl";
 
 const HOME_DASHBOARD_CARD_IDS = {
   traces: "home:traces",
@@ -60,6 +61,8 @@ export default function Dashboard() {
   const { timeRange, setTimeRange } = useDashboardDateRange();
   const { isBetaEnabled } = useV4Beta();
   const metricsVersion: ViewVersion = isBetaEnabled ? "v2" : "v1";
+  const t = useTranslations("dashboard");
+  const tNav = useTranslations("nav");
 
   const absoluteTimeRange = useMemo(
     () => toAbsoluteTimeRange(timeRange),
@@ -92,33 +95,33 @@ export default function Dashboard() {
 
   const filterColumns: ColumnDefinition[] = [
     {
-      name: "Trace Name",
+      name: t("filterByTraceName"),
       id: "traceName",
       type: "stringOptions",
       options: nameOptions,
       internal: "internalValue",
     },
     {
-      name: "Tags",
+      name: t("filterByTags"),
       id: "tags",
       type: "arrayOptions",
       options: tagsOptions,
       internal: "internalValue",
     },
     {
-      name: "User",
+      name: t("filterByUser"),
       id: "user",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Release",
+      name: t("filterByRelease"),
       id: "release",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Version",
+      name: t("filterByVersion"),
       id: "version",
       type: "string",
       internal: "internalValue",
@@ -199,7 +202,7 @@ export default function Dashboard() {
         withPadding
         scrollable
         headerProps={{
-          title: "Home",
+          title: tNav("home"),
           actionButtonsLeft: (
             <>
               <TimeRangePicker
@@ -219,7 +222,7 @@ export default function Dashboard() {
                 }
               />
               <MultiSelect
-                title="Environment"
+                title={t("environment")}
                 label="Env"
                 values={selectedEnvironments}
                 onValueChange={useDebounce(setSelectedEnvironments)}
