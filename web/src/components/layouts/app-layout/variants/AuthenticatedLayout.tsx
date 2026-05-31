@@ -22,6 +22,8 @@ import type { Session } from "next-auth";
 import type { NavigationItem } from "@/src/components/layouts/utilities/routes";
 import type { RouteGroup } from "@/src/components/layouts/routes";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "@/src/components/LanguageSwitcher";
 
 const CommandMenu = dynamic(
   () =>
@@ -105,6 +107,7 @@ export function AuthenticatedLayout({
   onSignOut,
 }: AuthenticatedLayoutProps) {
   const { isLangfuseCloud, region: currentRegion } = useLangfuseCloudRegion();
+  const t = useTranslations("auth");
   const assistantEnabled =
     useIsFeatureEnabled("inAppAgent") && aiFeaturesEnabled;
 
@@ -139,25 +142,26 @@ export function AuthenticatedLayout({
       avatar: user.image ?? "",
     },
     items: [
-      { name: "Account Settings", href: "/account/settings" },
-      { name: "Theme", onClick: () => {}, content: <ThemeToggle /> },
+      { name: t("accountSettings"), href: "/account/settings" },
+      { name: t("theme"), onClick: () => {}, content: <ThemeToggle /> },
+      { name: t("language"), onClick: () => {}, content: <LanguageSwitcher /> },
       ...(isLangfuseCloud
         ? [
             {
-              name: "Regions",
+              name: t("regions"),
               subItems: regionMenuItems,
               content: (
                 <>
-                  Regions
+                  {t("regions")}
                   <div className="ml-2 inline-flex rounded bg-black/5 p-1 text-xs dark:bg-white/10">
-                    Current: {currentRegion}
+                    {t("current")}: {currentRegion}
                   </div>
                 </>
               ),
             },
           ]
         : []),
-      { name: "Sign out", onClick: onSignOut },
+      { name: t("signOut"), onClick: onSignOut },
     ],
   };
 

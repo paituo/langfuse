@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
 import TracesTable from "@/src/components/table/use-cases/traces";
 import Page from "@/src/components/layouts/page";
 import { api } from "@/src/utils/api";
@@ -15,6 +16,7 @@ import { useQueryProject } from "@/src/features/projects/hooks";
 export default function Traces() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
+  const t = useTranslations("tracing");
   const { isBetaEnabled, isInitializing } = useV4Beta();
   const { project } = useQueryProject();
 
@@ -42,10 +44,11 @@ export default function Traces() {
     return (
       <Page
         headerProps={{
-          title: "Tracing",
+          title: t("title"),
           help: {
-            description:
-              "A trace represents a single function/api invocation. Traces contain observations. See [docs](https://langfuse.com/docs/observability/data-model) to learn more.",
+            description: t("description", {
+              docsLink: "https://langfuse.com/docs/observability/data-model",
+            }),
             href: "https://langfuse.com/docs/observability/data-model",
           },
         }}
@@ -59,12 +62,10 @@ export default function Traces() {
   return (
     <Page
       headerProps={{
-        title: "Tracing",
+        title: t("title"),
         help: {
-          description: (
-            <>
-              A trace represents a single function/api invocation. Traces
-              contain observations. See{" "}
+          description: t("descriptionRich", {
+            docsLink: (chunks) => (
               <a
                 href="https://langfuse.com/docs/observability/data-model"
                 target="_blank"
@@ -72,11 +73,10 @@ export default function Traces() {
                 className="decoration-primary/30 hover:decoration-primary underline"
                 onClick={(e) => e.stopPropagation()}
               >
-                docs
-              </a>{" "}
-              to learn more.
-            </>
-          ),
+                {chunks}
+              </a>
+            ),
+          }),
           href: "https://langfuse.com/docs/observability/data-model",
         },
         tabsProps:

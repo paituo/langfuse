@@ -31,6 +31,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useTranslations } from "next-intl";
 import { CloudPrivacyNotice } from "@/src/features/auth/components/AuthCloudPrivacyNotice";
 import { CloudRegionSwitch } from "@/src/features/auth/components/AuthCloudRegionSwitch";
 import { PasswordInput } from "@/src/components/ui/password-input";
@@ -49,7 +50,7 @@ import { getSafeRedirectPath } from "@/src/utils/redirect";
 const credentialAuthForm = z.object({
   email: z.email(),
   password: z.string().min(8, {
-    message: "Password must be at least 8 characters long",
+    message: "auth.passwordMinLength",
   }),
 });
 
@@ -527,7 +528,7 @@ const signInErrors = [
   {
     code: "OAuthAccountNotLinked",
     description:
-      "Please sign in with the same provider (e.g. Google, GitHub, Azure AD, etc.) that you used to create this account.",
+      "auth.oauthAccountNotLinked",
   },
 ];
 
@@ -537,6 +538,7 @@ export default function SignIn({
   runningOnHuggingFaceSpaces,
 }: PageProps) {
   const router = useRouter();
+  const t = useTranslations("auth");
   useHuggingFaceRedirect(runningOnHuggingFaceSpaces);
 
   // handle NextAuth error codes: https://next-auth.js.org/configuration/pages#sign-in-page
@@ -625,7 +627,7 @@ export default function SignIn({
         redirect: false,
       });
       if (result === undefined) {
-        setCredentialsFormError("An unexpected error occurred.");
+        setCredentialsFormError(t("unexpectedError"));
         captureException(new Error("Sign in result is undefined"));
       } else if (!result.ok) {
         if (!result.error) {
@@ -636,13 +638,13 @@ export default function SignIn({
           );
         }
         setCredentialsFormError(
-          result?.error ?? "An unexpected error occurred.",
+          result?.error ?? t("unexpectedError"),
         );
       }
     } catch (error) {
       captureException(error);
       console.error(error);
-      setCredentialsFormError("An unexpected error occurred.");
+      setCredentialsFormError(t("unexpectedError"));
     }
   }
 
@@ -664,7 +666,7 @@ export default function SignIn({
     const email = emailSchema.safeParse(credentialsForm.getValues("email"));
     if (!email.success) {
       credentialsForm.setError("email", {
-        message: "Invalid email address",
+        message: t("invalidEmail"),
       });
       setContinueLoading(false);
       return;
@@ -712,7 +714,7 @@ export default function SignIn({
     } catch (error) {
       console.error(error);
       setCredentialsFormError(
-        "Unable to check SSO configuration. Please try again.",
+        t("ssoCheckError"),
       );
     } finally {
       setContinueLoading(false);
@@ -722,25 +724,24 @@ export default function SignIn({
   return (
     <>
       <Head>
-        <title>Sign in | Langfuse</title>
+        <title>{t("signInTitle")} | Langfuse</title>
       </Head>
       <div className="flex flex-1 flex-col py-6 sm:min-h-full sm:justify-center sm:px-6 sm:py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <LangfuseIcon className="mx-auto" />
           <h2 className="text-primary mt-4 text-center text-2xl leading-9 font-bold tracking-tight">
-            Sign in to your account
+            {t("signInToAccount")}
           </h2>
         </div>
 
         {isLangfuseCloud && (
           <div className="bg-card mt-4 -mb-4 rounded-lg p-3 text-center text-sm sm:mx-auto sm:w-full sm:max-w-[480px] sm:rounded-lg sm:px-6">
-            If you are experiencing issues signing in, please force refresh this
-            page (CMD + SHIFT + R) or clear your browser cache.{" "}
+            {t("signInIssues")}{" "}
             <a
               href="mailto:support@langfuse.com"
               className="text-primary-accent hover:text-hover-primary-accent cursor-pointer text-xs font-medium whitespace-nowrap"
             >
-              (contact us)
+              ({t("contactUs")})
             </a>
           </div>
         )}
@@ -770,7 +771,7 @@ export default function SignIn({
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{t("email")}</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="jsdoe@example.com"
@@ -792,14 +793,14 @@ export default function SignIn({
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Password{" "}
+                              {t("password")}{" "}
                               <Link
                                 href="/auth/reset-password"
                                 className="text-primary-accent hover:text-hover-primary-accent ml-1 text-xs"
                                 tabIndex={-1}
-                                title="What is this?"
+                                title={t("forgotPasswordTitle")}
                               >
-                                (forgot password?)
+                                ({t("forgotPassword")})
                               </Link>
                             </FormLabel>
                             <FormControl>
@@ -827,7 +828,7 @@ export default function SignIn({
                       }
                       data-testid="submit-email-password-sign-in-form"
                     >
-                      {showPasswordStep ? "Sign in" : "Continue"}
+                      {showPasswordStep ? t("signIn") : t("continue")}
                     </Button>
                   </form>
                 </Form>
@@ -840,7 +841,7 @@ export default function SignIn({
                       : "hidden",
                   )}
                 >
-                  Last used
+                  {t("lastUsed")}
                 </div>
               </div>
             )}
@@ -848,9 +849,9 @@ export default function SignIn({
               <div className="text-destructive text-center text-sm font-medium">
                 {credentialsFormError}
                 <br />
-                Contact support if this error is unexpected.{" "}
+                {t("contactSupportIfError")}{" "}
                 {isLangfuseCloud &&
-                  "Make sure you are using the correct cloud data region."}
+                  t("correctCloudRegion")}
               </div>
             ) : null}
             <SSOButtons
@@ -864,17 +865,17 @@ export default function SignIn({
           env.NEXT_PUBLIC_SIGN_UP_DISABLED !== "true" &&
           authProviders.credentials ? (
             <p className="text-muted-foreground mt-10 text-center text-sm">
-              No account yet?{" "}
+              {t("noAccountYet")}{" "}
               <Link
                 href={`/auth/sign-up${router.asPath.includes("?") ? router.asPath.substring(router.asPath.indexOf("?")) : ""}`}
                 className="text-primary-accent hover:text-hover-primary-accent leading-6 font-semibold"
               >
-                Sign up
+                {t("signUp")}
               </Link>
             </p>
           ) : null}
         </div>
-        <CloudPrivacyNotice action="signing in" />
+        <CloudPrivacyNotice action={t("signingIn")} />
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import { setUser } from "@sentry/nextjs";
 import { useSession } from "next-auth/react";
 import { TooltipProvider } from "@/src/components/ui/tooltip";
 import { CommandMenuProvider } from "@/src/features/command-k-menu/CommandMenuProvider";
+import { NextIntlClientProvider } from "next-intl";
 
 import { api } from "@/src/utils/api";
 
@@ -109,7 +110,7 @@ if (
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, messages, ...pageProps },
 }) => {
   const router = useRouter();
 
@@ -129,6 +130,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }, []);
 
   return (
+    <NextIntlClientProvider messages={messages}>
     <QueryParamProvider
       adapter={NextAdapterPages}
       options={{ enableBatching: true }}
@@ -169,6 +171,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         </CommandMenuProvider>
       </TooltipProvider>
     </QueryParamProvider>
+    </NextIntlClientProvider>
   );
 };
 

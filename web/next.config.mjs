@@ -5,6 +5,9 @@
 await import("./src/env.mjs");
 import { withSentryConfig } from "@sentry/nextjs";
 import { env } from "./src/env.mjs";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 /**
  * CSP headers
@@ -87,16 +90,6 @@ const nextConfig = {
     turbopackFileSystemCacheForBuild: true,
   },
 
-  /**
-   * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
-   * out.
-   *
-   * @see https://github.com/vercel/next.js/issues/41980
-   */
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
   output: "standalone",
 
   async headers() {
@@ -215,7 +208,7 @@ const nextConfig = {
   },
 };
 
-const sentryConfig = withSentryConfig(nextConfig, {
+const sentryConfig = withSentryConfig(withNextIntl(nextConfig), {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 

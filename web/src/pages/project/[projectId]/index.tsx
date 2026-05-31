@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { GenerationLatencyChart } from "@/src/features/dashboard/components/LatencyChart";
 import { ChartScores } from "@/src/features/dashboard/components/ChartScores";
@@ -56,6 +57,8 @@ const HOME_DASHBOARD_CARD_IDS = {
 
 export default function Dashboard() {
   const router = useRouter();
+  const t = useTranslations("dashboard");
+  const tNav = useTranslations("nav");
   const projectId = router.query.projectId as string;
   const { timeRange, setTimeRange } = useDashboardDateRange();
   const { isBetaEnabled } = useV4Beta();
@@ -92,33 +95,33 @@ export default function Dashboard() {
 
   const filterColumns: ColumnDefinition[] = [
     {
-      name: "Trace Name",
+      name: t("traceName"),
       id: "traceName",
       type: "stringOptions",
       options: nameOptions,
       internal: "internalValue",
     },
     {
-      name: "Tags",
+      name: t("tags"),
       id: "tags",
       type: "arrayOptions",
       options: tagsOptions,
       internal: "internalValue",
     },
     {
-      name: "User",
+      name: t("user"),
       id: "user",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Release",
+      name: t("release"),
       id: "release",
       type: "string",
       internal: "internalValue",
     },
     {
-      name: "Version",
+      name: t("version"),
       id: "version",
       type: "string",
       internal: "internalValue",
@@ -199,7 +202,7 @@ export default function Dashboard() {
         withPadding
         scrollable
         headerProps={{
-          title: "Home",
+          title: tNav("home"),
           actionButtonsLeft: (
             <>
               <TimeRangePicker
@@ -219,7 +222,7 @@ export default function Dashboard() {
                 }
               />
               <MultiSelect
-                title="Environment"
+                title={t("environment")}
                 label="Env"
                 values={selectedEnvironments}
                 onValueChange={useDebounce(setSelectedEnvironments)}
