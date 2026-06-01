@@ -1,0 +1,99 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "search": "搜索...",
+    "noData": "暂无数据",
+    "confirm": "确认",
+    "back": "返回",
+    "close": "关闭",
+    "submit": "提交",
+    "refresh": "刷新",
+    "error": "错误",
+    "success": "成功",
+    "warning": "警告",
+    "retry": "重试",
+    "goBack": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "showMore": "展开更多",
+    "showLess": "收起",
+    "selectAll": "全选",
+    "deselectAll": "取消全选",
+    "noResultsFound": "未找到结果",
+    "redirecting": "跳转中..."
+  },
+  "nav": {
+    "traces": "追踪",
+    "observations": "观测点",
+    "prompts": "提示词",
+    "datasets": "数据集",
+    "experiments": "实验",
+    "evaluations": "评估",
+    "scores": "评分",
+    "dashboard": "仪表盘",
+    "sessions": "会话",
+    "users": "用户",
+    "settings": "设置"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "signOut": "退出登录",
+    "email": "邮箱",
+    "password": "密码",
+    "name": "姓名",
+    "or": "或",
+    "signInWith": "使用 {provider} 登录",
+    "noAccount": "没有账户？",
+    "hasAccount": "已有账户？",
+    "forgotPassword": "忘记密码？",
+    "resetPassword": "重置密码",
+    "setNewPassword": "设置新密码",
+    "verificationCode": "验证码",
+    "verify": "验证"
+  },
+  "tracing": {
+    "title": "追踪",
+    "description": "查看和分析您的 LLM 应用追踪",
+    "observations": "观测点",
+    "sessions": "会话",
+    "loading": "加载中...",
+    "noTraces": "未找到追踪",
+    "traceNotFound": "未找到追踪"
+  },
+  "dashboard": {
+    "title": "仪表盘",
+    "description": "LLM 应用性能概览"
+  },
+  "prompts": {
+    "title": "提示词",
+    "description": "管理和版本化您的 LLM 提示词"
+  },
+  "datasets": {
+    "title": "数据集",
+    "description": "管理您的评估数据集"
+  },
+  "experiments": {
+    "title": "实验",
+    "description": "运行和对比实验"
+  },
+  "evaluations": {
+    "title": "评估",
+    "description": "配置和运行评估"
+  },
+  "settings": {
+    "title": "设置",
+    "description": "管理您的项目和组织设置"
+  },
+  "language": {
+    "switchLanguage": "切换语言",
+    "english": "English",
+    "chinese": "中文（简体）",
+    "currentLanguage": "当前语言"
+  }
+}

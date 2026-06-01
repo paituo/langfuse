@@ -5,6 +5,7 @@ import { setUser } from "@sentry/nextjs";
 import { useSession } from "next-auth/react";
 import { TooltipProvider } from "@/src/components/ui/tooltip";
 import { CommandMenuProvider } from "@/src/features/command-k-menu/CommandMenuProvider";
+import { NextIntlClientProvider } from "next-intl";
 
 import { api } from "@/src/utils/api";
 
@@ -107,9 +108,9 @@ if (
   });
 }
 
-const MyApp: AppType<{ session: Session | null }> = ({
+const MyApp: AppType<{ session: Session | null; messages?: Record<string, unknown> }> = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { session, messages, ...pageProps },
 }) => {
   const router = useRouter();
 
@@ -129,46 +130,51 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }, []);
 
   return (
-    <QueryParamProvider
-      adapter={NextAdapterPages}
-      options={{ enableBatching: true }}
+    <NextIntlClientProvider
+      locale={router.locale}
+      messages={messages}
     >
-      <TooltipProvider>
-        <CommandMenuProvider>
-          <PostHogProvider client={posthog}>
-            <SessionProvider
-              session={session}
-              refetchOnWindowFocus={true}
-              refetchInterval={5 * 60} // 5 minutes
-              basePath={`${env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/auth`}
-            >
-              <DetailPageListsProvider>
-                <MarkdownContextProvider>
-                  <ThemeProvider
-                    attribute="class"
-                    enableSystem
-                    disableTransitionOnChange
-                  >
-                    <ScoreCacheProvider>
-                      <CorrectionCacheProvider>
-                        <SupportDrawerProvider defaultOpen={false}>
-                          <InAppAiAgentProvider defaultOpen={false}>
-                            <AppLayout>
-                              <Component {...pageProps} />
-                              <UserTracking />
-                            </AppLayout>
-                          </InAppAiAgentProvider>
-                        </SupportDrawerProvider>
-                      </CorrectionCacheProvider>
-                    </ScoreCacheProvider>
-                  </ThemeProvider>
-                </MarkdownContextProvider>
-              </DetailPageListsProvider>
-            </SessionProvider>
-          </PostHogProvider>
-        </CommandMenuProvider>
-      </TooltipProvider>
-    </QueryParamProvider>
+      <QueryParamProvider
+        adapter={NextAdapterPages}
+        options={{ enableBatching: true }}
+      >
+        <TooltipProvider>
+          <CommandMenuProvider>
+            <PostHogProvider client={posthog}>
+              <SessionProvider
+                session={session}
+                refetchOnWindowFocus={true}
+                refetchInterval={5 * 60} // 5 minutes
+                basePath={`${env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/auth`}
+              >
+                <DetailPageListsProvider>
+                  <MarkdownContextProvider>
+                    <ThemeProvider
+                      attribute="class"
+                      enableSystem
+                      disableTransitionOnChange
+                    >
+                      <ScoreCacheProvider>
+                        <CorrectionCacheProvider>
+                          <SupportDrawerProvider defaultOpen={false}>
+                            <InAppAiAgentProvider defaultOpen={false}>
+                              <AppLayout>
+                                <Component {...pageProps} />
+                                <UserTracking />
+                              </AppLayout>
+                            </InAppAiAgentProvider>
+                          </SupportDrawerProvider>
+                        </CorrectionCacheProvider>
+                      </ScoreCacheProvider>
+                    </ThemeProvider>
+                  </MarkdownContextProvider>
+                </DetailPageListsProvider>
+              </SessionProvider>
+            </PostHogProvider>
+          </CommandMenuProvider>
+        </TooltipProvider>
+      </QueryParamProvider>
+    </NextIntlClientProvider>
   );
 };
 

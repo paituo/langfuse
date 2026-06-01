@@ -5,6 +5,7 @@
 await import("./src/env.mjs");
 import { withSentryConfig } from "@sentry/nextjs";
 import { env } from "./src/env.mjs";
+import createNextIntlPlugin from "next-intl/plugin";
 
 /**
  * CSP headers
@@ -94,7 +95,7 @@ const nextConfig = {
    * @see https://github.com/vercel/next.js/issues/41980
    */
   i18n: {
-    locales: ["en"],
+    locales: ["en", "zh-CN"],
     defaultLocale: "en",
   },
   output: "standalone",
@@ -215,7 +216,10 @@ const nextConfig = {
   },
 };
 
-const sentryConfig = withSentryConfig(nextConfig, {
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+const intlConfig = withNextIntl(nextConfig);
+
+const sentryConfig = withSentryConfig(intlConfig, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 

@@ -13,6 +13,7 @@ import { TopBannerProvider } from "@/src/features/top-banner";
 import { ResizableContent } from "../components/ResizableContent";
 import useIsFeatureEnabled from "@/src/features/feature-flags/hooks/useIsFeatureEnabled";
 import { ThemeToggle } from "@/src/features/theming/ThemeToggle";
+import { LanguageSwitcher } from "@/src/components/LanguageSwitcher";
 import {
   getAvailableCloudRegionOptions,
   getCloudRegionAuthUrl,
@@ -141,6 +142,7 @@ export function AuthenticatedLayout({
     items: [
       { name: "Account Settings", href: "/account/settings" },
       { name: "Theme", onClick: () => {}, content: <ThemeToggle /> },
+      { name: "Language", onClick: () => {}, content: <LanguageSwitcher /> },
       ...(isLangfuseCloud
         ? [
             {
