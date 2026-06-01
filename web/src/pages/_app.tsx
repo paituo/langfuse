@@ -257,8 +257,11 @@ if (
   });
 }
 
-// Disable static optimization for all pages
-// This prevents prerender errors during build when database is not available
-MyApp.getInitialProps = async () => {
-  return {};
+// Disable static optimization by using getInitialProps
+// This forces all pages to be rendered dynamically at runtime
+MyApp.getInitialProps = async (appContext) => {
+  const pageProps = appContext.Component.getInitialProps
+    ? await appContext.Component.getInitialProps(appContext.ctx)
+    : {};
+  return { pageProps };
 };
