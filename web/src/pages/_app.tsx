@@ -256,3 +256,9 @@ if (
     return await shutdown(signal);
   });
 }
+
+// Disable static optimization for all pages
+// This prevents prerender errors during build when database is not available
+MyApp.getInitialProps = async () => {
+  return {};
+};
