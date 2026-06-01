@@ -2,13 +2,6 @@ import { useRouter } from "next/router";
 import { useTransition } from "react";
 import { locales, type Locale } from "@/src/i18n/config";
 import { Globe } from "lucide-react";
-import { Button } from "@/src/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu";
 
 const localeNames: Record<Locale, string> = {
   en: "English",
@@ -30,24 +23,20 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2" disabled={isPending}>
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{localeNames[router.locale as Locale] ?? "English"}</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+    <div className="flex items-center gap-2">
+      <Globe className="h-4 w-4 text-muted-foreground" />
+      <select
+        value={router.locale ?? "en"}
+        onChange={(e) => switchLocale(e.target.value as Locale)}
+        disabled={isPending}
+        className="bg-background text-foreground h-7 rounded-md border px-2 text-sm outline-none focus:ring-1 focus:ring-ring disabled:opacity-50"
+      >
         {locales.map((locale) => (
-          <DropdownMenuItem
-            key={locale}
-            onClick={() => switchLocale(locale)}
-            className={router.locale === locale ? "bg-accent" : ""}
-          >
+          <option key={locale} value={locale}>
             {localeNames[locale]}
-          </DropdownMenuItem>
+          </option>
         ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </select>
+    </div>
   );
 }

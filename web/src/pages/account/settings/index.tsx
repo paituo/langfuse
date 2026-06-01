@@ -26,6 +26,7 @@ import {
 } from "@/src/components/ui/dialog";
 import { useSession, signOut } from "next-auth/react";
 import { SettingsDangerZone } from "@/src/components/SettingsDangerZone";
+import { LanguageSwitcher } from "@/src/components/LanguageSwitcher";
 import ContainerPage from "@/src/components/layouts/container-page";
 import { useRouter } from "next/router";
 import { StringNoHTML } from "@langfuse/shared";
@@ -278,6 +279,15 @@ const getAccountSettingsPages = (userEmail: string): AccountSettingsPage[] => [
           </Card>
         </div>
         <UpdateDisplayName />
+        <div>
+          <Header title="Language" />
+          <Card className="p-3">
+            <p className="text-primary mb-4 text-sm">
+              Choose your preferred language for the Langfuse interface.
+            </p>
+            <LanguageSwitcher />
+          </Card>
+        </div>
         <div>
           <Header title="Password" />
           <Card className="p-3">
