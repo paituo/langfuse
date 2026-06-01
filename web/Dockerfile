@@ -55,6 +55,7 @@ RUN pnpm install --frozen-lockfile --registry=https://registry.npmmirror.com
 
 ENV DOCKER_BUILD 1
 ENV NEXT_MANUAL_SIG_HANDLE true
+ENV NEXT_PUBLIC_LANGFUSE_RUN_NEXT_INIT="false"
 
 # pass public variables in build step
 ARG NEXT_PUBLIC_PLAIN_APP_ID
