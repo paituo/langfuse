@@ -131,10 +131,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }, []);
 
   return (
-    <NextIntlClientProvider
-      locale={router.locale}
-      messages={messages}
-    >
+    <NextIntlClientProvider locale={router.locale} messages={messages}>
       <QueryParamProvider
         adapter={NextAdapterPages}
         options={{ enableBatching: true }}
