@@ -98,6 +98,16 @@ ENV SENTRY_RELEASE=$NEXT_PUBLIC_BUILD_ID
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
 
+# Create minimal .env file for build
+RUN echo "DATABASE_URL=postgresql://build:build@localhost:5432/build" > .env && \
+    echo "SHADOW_DATABASE_URL=postgresql://build:build@localhost:5432/build" >> .env && \
+    echo "DIRECT_URL=postgresql://build:build@localhost:5432/build" >> .env && \
+    echo "CLICKHOUSE_URL=http://localhost:8123" >> .env && \
+    echo "CLICKHOUSE_MIGRATION_URL=clickhouse://localhost:9000" >> .env && \
+    echo "SALT=build-salt-placeholder" >> .env && \
+    echo "NEXTAUTH_SECRET=build-secret-placeholder" >> .env && \
+    echo "NEXTAUTH_URL=http://localhost:3000" >> .env
+
 # remove middleware.ts if it exists - not needed in self-hosted environments
 RUN rm -f ./web/src/middleware.ts
 
