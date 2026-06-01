@@ -16,7 +16,7 @@ services:
       clickhouse:
         condition: service_healthy
     ports:
-      - "3000:3000"
+      - "4000:3000"
     environment: &langfuse-web-env
       HOSTNAME: 0.0.0.0
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
