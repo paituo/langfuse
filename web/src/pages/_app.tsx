@@ -5,7 +5,7 @@ import { setUser } from "@sentry/nextjs";
 import { useSession } from "next-auth/react";
 import { TooltipProvider } from "@/src/components/ui/tooltip";
 import { CommandMenuProvider } from "@/src/features/command-k-menu/CommandMenuProvider";
-import { NextIntlClientProvider } from "next-intl";
+import { NextIntlClientProvider, useMessages } from "next-intl";
 
 import { api } from "@/src/utils/api";
 
@@ -108,11 +108,12 @@ if (
   });
 }
 
-const MyApp: AppType<{ session: Session | null; messages?: Record<string, unknown> }> = ({
+const MyApp: AppType<{ session: Session | null }> = ({
   Component,
-  pageProps: { session, messages, ...pageProps },
+  pageProps: { session, ...pageProps },
 }) => {
   const router = useRouter();
+  const messages = useMessages();
 
   useEffect(() => {
     // PostHog (cloud.langfuse.com)
