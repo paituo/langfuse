@@ -24,12 +24,12 @@ export function LanguageSwitcher() {
 
   return (
     <div className="flex items-center gap-2">
-      <Globe className="h-4 w-4 text-muted-foreground" />
+      <Globe className="text-muted-foreground h-4 w-4" />
       <select
         value={router.locale ?? "en"}
         onChange={(e) => switchLocale(e.target.value as Locale)}
         disabled={isPending}
-        className="bg-background text-foreground h-7 rounded-md border px-2 text-sm outline-none focus:ring-1 focus:ring-ring disabled:opacity-50"
+        className="bg-background text-foreground focus:ring-ring h-7 rounded-md border px-2 text-sm outline-none focus:ring-1 disabled:opacity-50"
       >
         {locales.map((locale) => (
           <option key={locale} value={locale}>

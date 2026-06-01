@@ -2,7 +2,10 @@ import { getRequestConfig } from "next-intl/server";
 import { locales, defaultLocale } from "./config";
 import type { Locale } from "./config";
 
-const messageImports: Record<string, () => Promise<{ default: Record<string, unknown> }>> = {
+const messageImports: Record<
+  string,
+  () => Promise<{ default: Record<string, unknown> }>
+> = {
   en: () => import("../../messages/en.json"),
   "zh-CN": () => import("../../messages/zh-CN.json"),
 };
