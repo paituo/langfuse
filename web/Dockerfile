@@ -107,6 +107,8 @@ RUN rm -f ./web/src/middleware.ts
 ENV NEXT_TELEMETRY_DISABLED 1
 # set the CI flag to true to get CI specific logs
 ENV CI true
+# Skip env validation during build - env vars are validated at runtime
+ENV SKIP_ENV_VALIDATION 1
 
 RUN NODE_OPTIONS='--max-old-space-size-percentage=75' turbo run build --filter=web...
 
