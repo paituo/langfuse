@@ -3,9 +3,6 @@ services:
     build:
       dockerfile: ./web/Dockerfile
       context: .
-      args:
-        - NEXT_PUBLIC_LANGFUSE_CLOUD_REGION=${NEXT_PUBLIC_LANGFUSE_CLOUD_REGION}
-        - NEXT_PUBLIC_LANGFUSE_CODE_EVAL_ENABLED=${NEXT_PUBLIC_LANGFUSE_CODE_EVAL_ENABLED}
     depends_on: &langfuse-depends-on
       postgres:
         condition: service_healthy
@@ -48,8 +45,6 @@ services:
     build:
       dockerfile: ./worker/Dockerfile
       context: .
-      args:
-        - NEXT_PUBLIC_LANGFUSE_CLOUD_REGION=${NEXT_PUBLIC_LANGFUSE_CLOUD_REGION}
     depends_on: *langfuse-depends-on
     ports:
       - "3030:3030"
